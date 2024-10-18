@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export const Navbar = () => {
   return (
@@ -23,9 +24,11 @@ export const Navbar = () => {
           </svg>
         </label>
       </div>
-      <div className="flex-1">
-        <a className="btn btn-ghost text-xl">PicaratMovies</a>
-      </div>
+      <Link to="/">
+        <div className="flex-1">
+          <a className="btn btn-ghost text-xl">Nightflix at 25:00</a>
+        </div>
+      </Link>
       <div className="flex-none">
         <button className="btn btn-square btn-ghost">
           <svg
