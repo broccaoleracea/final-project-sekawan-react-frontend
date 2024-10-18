@@ -6,6 +6,9 @@ const MovieFetcher = ({ onFetch }) => {
     const apiKey = import.meta.env.VITE_TMDB_API_KEY;
     const apiRDT = import.meta.env.VITE_TMDB_READ_ACCESS_TOKEN;
     const accId = import.meta.env.VITE_TMDB_ACC_KEY;
+    const baseUrl = import.meta.env.VITE_TMDB_BASE_URL;
+    const baseImgUrl = import.meta.env.VITE_TMDB_BASE_IMG_URL;
+
 
     const [loading, setLoading] = useState(true);
     
@@ -15,23 +18,15 @@ const MovieFetcher = ({ onFetch }) => {
       try {
         let header = { accept: "application/json", Authorization: "Bearer " + apiRDT +"" };
         const response = await axios.get(
-          `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}`
+          `${baseUrl}/genre/movie/list?api_key=${apiKey}`
            ,{
              headers: header,
            }
         );
-
-        const responseSearch = await axios.get(
-          `https://api.themoviedb.org/3/search/movie?query=layton?api_key=${apiKey}`,
-          {
-            headers: header,
-          }
-        );
-        const searchList = responseSearch.data;
         const movieList = response.data;
-        console.log(movieList, searchList)
+        console.log(movieList)
         
-        onFetch(movieList, searchList);
+        onFetch(movieList);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
