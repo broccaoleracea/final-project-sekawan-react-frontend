@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import MovieFetcher from "./Components/Fetchers/Fetcher";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { Navbar } from "./Components/Navbar";
 import store from "./Components/Store/store";
 import { Provider } from "react-redux";
 import Homepage from "./Pages/Main/Homepage";
 import Details from "./Pages/Main/Details";
+import SearchPage from "./Pages/Main/SearchPage";
+import MyLists from "./Pages/Lists/MyLists";
+import ListDetail from "./Pages/Lists/ListDetail";
 
 function App() {
-  const [count, setCount] = useState();
   const [theme, setTheme] = useState(
     localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
   );
@@ -39,17 +40,19 @@ function App() {
             <input id="my-drawer" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content">
               <Navbar />
-              <MovieFetcher onFetch={setCount} />
             </div>
-            <div className="drawer-side pr-0">
+            <div className="drawer-side pr-0 z-[100]">
               <label
                 htmlFor="my-drawer"
                 aria-label="close sidebar"
                 className="drawer-overlay"
               ></label>
               <ul className="menu bg-base-200 text-base-content min-h-full w-80 ">
+                <li className="menu-title text-left">My Account</li>
                 <li>
-                  <a>Sidebar Item 1</a>
+                  <Link to="/list/me">
+                    <a>Lists</a>
+                  </Link>
                 </li>
                 <li>
                   <a>Sidebar Item 2</a>
@@ -96,11 +99,11 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/detail/:mediaType/:id" element={<Details />} />
-            {/*<Route path="/search" element={<Search />} />
-        <Route path="/category/:category" element={<Category />} />
-        <Route path="/lists" element={<Lists />} />
-        <Route path="/lists/:id" element={<ListItemsView />} />
-        <Route path="/*" element={<Homepage />} /> */}
+            <Route path="/search" element={<SearchPage />} />
+            {/* <Route path="/category/:category" element={<Category />} /> */}
+            <Route path="/list/me" element={<MyLists />} />
+            <Route path="/list/:id" element={<ListDetail />} />
+            <Route path="/*" element={<Homepage />} />
           </Routes>
         </Provider>
       </BrowserRouter>

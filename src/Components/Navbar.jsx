@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import SearchBar from "./Searchbar";
 
 export const Navbar = () => {
   return (
@@ -29,7 +30,8 @@ export const Navbar = () => {
           <a className="btn btn-ghost text-xl">Nightflix at 25:00</a>
         </div>
       </Link>
-      <div className="flex-none">
+      <div className="flex-none justify-end">
+        <SearchBar />
         <button className="btn btn-square btn-ghost">
           <svg
             xmlns="http://www.w3.org/2000/svg"

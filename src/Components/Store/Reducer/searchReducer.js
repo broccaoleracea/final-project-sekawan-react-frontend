@@ -1,6 +1,6 @@
 import { SET_SEARCH } from "../Action/movieAction";
 const DefaultValue = {
-  detail: {},
+  search: []
 };
 
 const searchReducer = (state = DefaultValue, action) => {
@@ -8,7 +8,7 @@ const searchReducer = (state = DefaultValue, action) => {
     case SET_SEARCH:
       return {
         ...state,
-      search: action.payload,
+        search: action.payload,
       };
     default:
       return state;

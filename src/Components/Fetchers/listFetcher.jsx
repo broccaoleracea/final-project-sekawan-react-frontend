@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { setList } from "../../Store/Action/movieAction";
+import { setList } from "../Store/Action/movieAction";
 
 const listFetcher = () => {
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;

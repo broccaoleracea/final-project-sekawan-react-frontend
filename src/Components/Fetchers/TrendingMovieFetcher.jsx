@@ -6,7 +6,7 @@ import { setTrend } from "../../Components/Store/Action/movieAction";
 
 const TrendMovieFetcher = () => {
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
-  const apiRDT = import.meta.env.VITE_TMDB_TOKEN;
+  const apiRDT = import.meta.env.VITE_TMDB_API_TOKEN;
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -18,7 +18,7 @@ const TrendMovieFetcher = () => {
         Authorization: "Bearer " + apiRDT + "",
       };
       const response = await axios.get(
-        `https://api.themoviedb.org/3/trending/all/day?api_key=${apiKey}`,
+        `https://api.themoviedb.org/3/trending/movie/day?api_key=${apiKey}`,
         {
           headers: header,
         }
