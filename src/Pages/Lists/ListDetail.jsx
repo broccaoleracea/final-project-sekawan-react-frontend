@@ -8,24 +8,31 @@ const ListDetail = () => {
   const list = useSelector((state) => state.list.list);
   const { id } = useParams();
   return (
-    <div>
+    <div className="main m-4 text-left">
       <ListDetailFetcher id={id} />
-      <h1 className="text-4xl font-bold mb-6 text-center">List Details</h1>
-      <p>Name : {list.name}</p>
-      <p>Created by : {list.created_by}</p>
+      <h1 className="text-4xl font-bold mb-2">{list.name}</h1>
+      <p>
+        List created by <span className="italic">{list.created_by}</span>
+      </p>
       <p>Items count : {list.item_count}</p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {list?.items?.map((movie) => (
-          <div key={movie.id} className="">
-            <MoviePoster
-              imgUrl={movie.poster_path}
-              title={movie.name || movie.title}
-              id={movie.id}
-              mediaType={movie.media_type}
-            />
-          </div>
-        ))}
-      </div>
+      {list.item_count > 0 ? (
+        <div className="grid sm:grid-cols-2 grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 my-4">
+          {list?.items?.map((movie) => (
+            <div key={movie.id} className="">
+              <MoviePoster
+                imgUrl={movie.poster_path}
+                title={movie.name || movie.title}
+                id={movie.id}
+                mediaType={movie.media_type}
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="flex w-full h-full justify-center align-middle text-slate-600 italic">
+          There's no item to display.
+        </div>
+      )}
     </div>
   );
 };

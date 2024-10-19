@@ -5,10 +5,11 @@ import { Navbar } from "./Components/Navbar";
 import store from "./Components/Store/store";
 import { Provider } from "react-redux";
 import Homepage from "./Pages/Main/Homepage";
-import Details from "./Pages/Main/Details";
+import Details from "./Pages/Movie/Details";
 import SearchPage from "./Pages/Main/SearchPage";
 import MyLists from "./Pages/Lists/MyLists";
 import ListDetail from "./Pages/Lists/ListDetail";
+import PeopleDetail from "./Pages/People/PeopleDetails";
 
 function App() {
   const [theme, setTheme] = useState(
@@ -48,16 +49,55 @@ function App() {
                 className="drawer-overlay"
               ></label>
               <ul className="menu bg-base-200 text-base-content min-h-full w-80 ">
+                <li>
+                  <Link to="/">
+                    <a className="flex gap-2">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                        />
+                      </svg>
+                      Home
+                    </a>
+                  </Link>
+                </li>
                 <li className="menu-title text-left">My Account</li>
                 <li>
                   <Link to="/list/me">
-                    <a>Lists</a>
+                    <a className="flex gap-2">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                      </svg>
+                      Lists
+                    </a>
                   </Link>
                 </li>
-                <li>
-                  <a>Sidebar Item 2</a>
-                </li>
-                <label className="flex cursor-pointer gap-2">
+                <label className="flex cursor-pointer gap-2 m-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="20"

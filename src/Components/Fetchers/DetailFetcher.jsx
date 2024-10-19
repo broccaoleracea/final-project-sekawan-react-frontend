@@ -44,9 +44,17 @@ const DetailMovieFetcher = ({ id, type }) => {
           `https://api.themoviedb.org/3/tv/${id}/account_states?api_key=${apiKey}`,
           { headers: header }
         );
+      } else if (type == "person") {
+        console.log(
+          `Accessed : https://api.themoviedb.org/3/person/${id}?api_key=${apiKey}`
+        );
+        response = await axios.get(
+          `https://api.themoviedb.org/3/person/${id}?api_key=${apiKey}`,
+          { headers: header }
+        );
       }
       const movieData = response.data;
-      const stateData = responseState.data;
+      const stateData = responseState?.data;
       console.log(movieData, stateData);
       console.log(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`);
       dispatch(setMovieDetail(movieData));

@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import MoviePoster from "../../Components/Cards/MoviePoster";
 import { setSearch } from "../../Components/Store/Action/movieAction";
+import PersonCard from "../../Components/Cards/PersonCard";
 
 const SearchPage = () => {
   const dispatch = useDispatch();
@@ -22,12 +23,20 @@ const SearchPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {search?.results?.map((item) => (
               <div key={item.id}>
-                <MoviePoster
-                  id={item.id}
-                  mediaType={item.media_type}
-                  title={item.media_type === "tv" ? item.name : item.title}
-                  imgUrl={item.poster_path}
-                />
+                {item.media_type === "person" ? (
+                  <PersonCard
+                    id={item.id}
+                    name={item.name}
+                    imgUrl={item.profile_path}
+                  />
+                ) : (
+                  <MoviePoster
+                    id={item.id}
+                    mediaType={item.media_type}
+                    title={item.media_type === "tv" ? item.name : item.title}
+                    imgUrl={item.poster_path}
+                  />
+                )}
               </div>
             ))}
           </div>
