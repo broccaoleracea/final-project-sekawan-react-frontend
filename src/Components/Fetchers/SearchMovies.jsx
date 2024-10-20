@@ -4,13 +4,16 @@ import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { setSearch } from "../Store/Action/movieAction";
 
-const FetcherSearch = ({ query }) => {
+const FetcherSearch = ({ query, page }) => {
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
   const apiRDT = import.meta.env.VITE_TMDB_TOKEN;
 
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
+  if (!page) {
+    page = 1;
+  }
   const fetchSearch = useCallback(async () => {
     setLoading(true);
     try {
@@ -19,7 +22,7 @@ const FetcherSearch = ({ query }) => {
         Authorization: `Bearer ${apiRDT}`,
       };
       const response = await axios.get(
-        `https://api.themoviedb.org/3/search/multi?query=${query}&api_key=${apiKey}`,
+        `https://api.themoviedb.org/3/search/multi?query=${query}&page=${page}&api_key=${apiKey}`,
         { headers: header }
       );
       const movieData = response.data;
@@ -30,7 +33,7 @@ const FetcherSearch = ({ query }) => {
     } finally {
       setLoading(false);
     }
-  }, [apiKey, apiRDT, query, dispatch]);
+  }, [apiKey, apiRDT, query, page, dispatch]);
 
   useEffect(() => {
     fetchSearch();
