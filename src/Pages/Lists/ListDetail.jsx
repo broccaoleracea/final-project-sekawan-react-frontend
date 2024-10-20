@@ -8,15 +8,17 @@ const ListDetail = () => {
   const list = useSelector((state) => state.list.list);
   const { id } = useParams();
   return (
-    <div className="main m-4 text-left">
+    <div className="main m-4 text-left flex flex-col justify-center items-center">
       <ListDetailFetcher id={id} />
-      <h1 className="text-4xl font-bold mb-2">{list.name}</h1>
-      <p>
-        List created by <span className="italic">{list.created_by}</span>
-      </p>
-      <p>Items count : {list.item_count}</p>
+      <div className="min-w-full">
+        <h1 className="text-4xl font-bold">{list.name}</h1>
+        <p>
+          List created by <span className="italic">{list.created_by}</span>
+        </p>
+        <p>Items count : {list.item_count}</p>
+      </div>
       {list.item_count > 0 ? (
-        <div className="grid sm:grid-cols-2 grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 my-4">
+        <div className="grid sm:grid-cols-2 grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 my-4 max-w-screen-xl">
           {list?.items?.map((movie) => (
             <div key={movie.id} className="">
               <MoviePoster

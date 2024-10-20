@@ -1,6 +1,7 @@
-import { SET_SEARCH } from "../Action/movieAction";
+import { SET_SEARCH, SET_LOADING } from "../Action/movieAction";
 const DefaultValue = {
-  search: []
+  search: [],
+  loading: false,
 };
 
 const searchReducer = (state = DefaultValue, action) => {
@@ -9,6 +10,11 @@ const searchReducer = (state = DefaultValue, action) => {
       return {
         ...state,
         search: action.payload,
+      };
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: action.payload,
       };
     default:
       return state;

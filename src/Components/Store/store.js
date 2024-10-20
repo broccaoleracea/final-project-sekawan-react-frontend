@@ -12,6 +12,7 @@ const store = configureStore({
     search: searchReducer,
     list: listReducer,
     itemState: stateReducer,
+    loading: searchReducer,
   },
 });
 export default store;

@@ -1,4 +1,9 @@
 export const SET_TREND = "SET_TREND";
+export const SET_LOADING = "SET_LOADING";
+export const setLoading = (loading) => ({
+  type: SET_LOADING,
+  payload: loading,
+});
 export const setTrend = (trend) => {
   return {
     type: SET_TREND,

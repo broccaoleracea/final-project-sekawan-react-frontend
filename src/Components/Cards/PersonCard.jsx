@@ -5,10 +5,10 @@ const PersonCard = ({ imgUrl, name, id }) => {
   return (
     <div>
       <Link to={`/detail/person/${id}`}>
-        <div className="card min-w-36">
-          <div className="min-h-52 flex mb-1 justify-center">
-            <div className="avatar self-center justify-center  ">
-              <div className="w-24 rounded-full">
+        <div className="card w-full">
+          <div className="h-64 flex mb-1 justify-center">
+            <div className="avatar self-center justify-center  p-3">
+              <div className="w-full rounded-full">
                 <img
                   src={
                     imgUrl

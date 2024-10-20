@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 const MoviePoster = ({ imgUrl, title, id, mediaType }) => {
   return (
     <Link to={`/detail/${mediaType === "tv" ? "tv" : "movie"}/${id}`}>
-      <div className="card max-w-36">
-        <figure className="rounded-none mb-1 min-w-36 min-h-52 max-h-52">
+      <div className="card w-full">
+        <figure className="rounded-md mb-1">
           <img
             src={
               imgUrl
@@ -13,7 +13,7 @@ const MoviePoster = ({ imgUrl, title, id, mediaType }) => {
                 : "https://usercontent.one/wp/www.vocaleurope.eu/wp-content/uploads/no-image.jpg?media=1642546813"
             }
             alt={title}
-            className="object-cover shadow-xl rounded-md min-w-36 min-h-52 max-h-52"
+            className="object-cover shadow-xl min-w-36 w-full h-72"
           />
         </figure>
         <div className="card-body card-end p-0">

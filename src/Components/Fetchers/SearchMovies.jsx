@@ -2,20 +2,19 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { setSearch } from "../Store/Action/movieAction";
+import { setSearch, setLoading } from "../Store/Action/movieAction";
 
 const FetcherSearch = ({ query, page }) => {
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
   const apiRDT = import.meta.env.VITE_TMDB_TOKEN;
 
-  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
   if (!page) {
     page = 1;
   }
   const fetchSearch = useCallback(async () => {
-    setLoading(true);
+    dispatch(setLoading(true));
     try {
       const header = {
         accept: "application/json",
@@ -31,7 +30,7 @@ const FetcherSearch = ({ query, page }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
-      setLoading(false);
+      dispatch(setLoading(false));
     }
   }, [apiKey, apiRDT, query, page, dispatch]);
 
@@ -39,11 +38,12 @@ const FetcherSearch = ({ query, page }) => {
     fetchSearch();
   }, [fetchSearch]);
 
-  return loading ? <div className="spinner"></div> : null; // Loading indicator
+  return null;
 };
 
 FetcherSearch.propTypes = {
   query: PropTypes.string.isRequired,
+  page: PropTypes.number.isRequired,
 };
 
 export default FetcherSearch;

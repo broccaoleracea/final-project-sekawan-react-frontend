@@ -30,7 +30,7 @@ const Homepage = () => {
         <div className="carousel carousel-center max-w-full  space-x-3 p-3">
           <TrendMovieFetcher />
           {trend?.map((item) => (
-            <div key={item.id} className="carousel-item">
+            <div key={item.id} className="carousel-item max-w-48">
               {item.media_type === "person" ? (
                 <PersonCard
                   id={item.id}
