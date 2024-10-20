@@ -1,9 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../Store/Action/userAction";
 
 const DeleteSession = () => {
   const [message, setMessage] = useState(""); // success/error messages
-
+  const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
   // delete session
   const delSession = async () => {
     const apiKey = import.meta.env.VITE_TMDB_API_KEY;
@@ -28,6 +31,7 @@ const DeleteSession = () => {
       });
 
       localStorage.removeItem("session_id");
+      dispatch(setUser(null));
       setMessage("Session successfully deleted!");
     } catch (error) {
       console.error(error.response?.data || error.message);
@@ -40,6 +44,7 @@ const DeleteSession = () => {
       <button
         onClick={delSession}
         disabled={!localStorage.getItem("session_id")}
+        className="text-slate-700 underline"
       >
         Logout
       </button>

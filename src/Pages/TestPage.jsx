@@ -1,6 +1,6 @@
 import React from "react";
-import CreateAuth from "../Components/Store/Login/CreateAuth";
-import DeleteSession from "../Components/Store/Login/DeleteSession";
+import CreateAuth from "../Components/Login/CreateAuth";
+import DeleteSession from "../Components/Login/DeleteSession";
 
 const TestPage = () => {
   return (

@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 export const Navbar = () => {
   const theme = useSelector((state) => state.theme.theme);
+  const user = useSelector((state) => state.user.user);
 
   console.log("Current Theme:", theme); // Check theme value
   return (
@@ -41,19 +42,24 @@ export const Navbar = () => {
           <SearchBar />
         </div>
       </div>
-      <div
-        className={`w-full p-1 border 
+      {user ? null : (
+        <div
+          className={`w-full p-1 border 
         ${
           theme === "light"
-            ? "bg-sky-200 border-sky-200"
-            : "bg-sky-950 border-sky-950"
+            ? "bg-sky-200 border-sky-200 border-b-sky-400"
+            : "bg-sky-950 border-sky-950 border-b-sky-700"
         }`}
-      >
-        <p className="text-center">
-          You're not logged in to TMDB. Please log in for the best user
-          experience.
-        </p>
-      </div>
+        >
+          <p className="text-center">
+            You're not logged in to TMDB. Please{" "}
+            <Link to="/" className="underline">
+              log in
+            </Link>{" "}
+            for the best user experience.
+          </p>
+        </div>
+      )}
     </>
   );
 };

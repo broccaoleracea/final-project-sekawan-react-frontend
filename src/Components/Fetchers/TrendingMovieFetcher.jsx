@@ -9,6 +9,7 @@ import {
 
 const TrendMovieFetcher = () => {
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
+  const sessionId = localStorage.getItem("session_id");
   const apiRDT = import.meta.env.VITE_TMDB_API_TOKEN;
 
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const TrendMovieFetcher = () => {
         Authorization: "Bearer " + apiRDT + "",
       };
       const response = await axios.get(
-        `https://api.themoviedb.org/3/trending/movie/day?api_key=${apiKey}`,
+        `https://api.themoviedb.org/3/trending/movie/day?api_key=${apiKey}&session_id=${sessionId}`,
         {
           headers: header,
         }

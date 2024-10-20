@@ -20,7 +20,7 @@ const SearchPage = () => {
 
       <div className="">
         {search ? (
-          <div className="main px-5 text-left flex flex-col justify-center items-center">
+          <div className="main px-5 my-5 text-left flex flex-col justify-center items-center">
             <div className="flex justify-between w-full ">
               {loading ? (
                 <>
@@ -55,7 +55,7 @@ const SearchPage = () => {
               )}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 my-4 max-w-screen-xl">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4 my-4 max-w-screen-xl">
               {loading ? (
                 <>
                   {Array.from({ length: 20 }, (_, index) => (

@@ -32,7 +32,7 @@ const ListDetail = () => {
           There's no item to display.
         </div>
       ) : (
-        <div className="grid sm:grid-cols-2 grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 my-4 max-w-screen-xl">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4 my-4 max-w-screen-xl">
           {(list?.items && list.items.length > 0
             ? list.items
             : Array.from({ length: 12 })

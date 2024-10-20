@@ -9,8 +9,8 @@ import SearchPage from "./Pages/Main/SearchPage";
 import MyLists from "./Pages/Lists/MyLists";
 import ListDetail from "./Pages/Lists/ListDetail";
 import TestPage from "./Pages/TestPage";
-import useTheme from "./Components/useTheme";
 import DrawerSide from "./Components/DrawerSide";
+import AuthTMDB from "./Pages/AuthTMDB";
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
             <Route path="/" element={<Homepage />} />
             <Route path="/detail/:mediaType/:id" element={<Details />} />
             <Route path="/search" element={<SearchPage />} />
-            {/* <Route path="/category/:category" element={<Category />} /> */}
+            <Route path="/auth" element={<AuthTMDB />} />
             <Route path="/list/me" element={<MyLists />} />
             <Route path="/list/:id" element={<ListDetail />} />
             <Route path="/*" element={<Homepage />} />

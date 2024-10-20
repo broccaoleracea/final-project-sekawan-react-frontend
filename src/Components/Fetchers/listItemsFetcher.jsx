@@ -1,10 +1,12 @@
 import { useCallback, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setList, setLoading } from "../Store/Action/movieAction";
 
 const ListItemsFetcher = ({ id }) => {
+  const sessionId = localStorage.getItem("session_id");
+  const user = useSelector((state) => state.user.user);
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
   const apiToken = import.meta.env.VITE_TMDB_API_TOKEN;
 
@@ -13,25 +15,27 @@ const ListItemsFetcher = ({ id }) => {
   const listItemsFetcher = useCallback(async () => {
     dispatch(setLoading(true));
     try {
-      const header = {
+      let headers = {
         accept: "application/json",
-        Authorization: `Bearer ${apiToken}`,
+        Authorization: "Bearer " + apiToken,
       };
-      const response = await axios.get(
-        `https://api.themoviedb.org/3/list/${id}?api_key=${apiKey}`,
-        { headers: header }
-      );
+
+      let url = `https://api.themoviedb.org/3/list/${id}?api_key=${apiKey}`;
+
+      if (sessionId) {
+        url += `&session_id=${sessionId}`;
+      }
+      const response = await axios.get(url, { headers });
       const movieData = response.data;
       console.log(movieData);
-      console.log(`https://api.themoviedb.org/3/list/${id}?api_key=${apiKey}`);
+      console.log(url);
       dispatch(setList(movieData));
     } catch (error) {
       console.error("Error fetching data:", error);
-      s;
     } finally {
       dispatch(setLoading(false));
     }
-  }, [dispatch, apiKey, apiToken, id]);
+  }, [dispatch, apiKey, apiToken, id, sessionId]);
 
   useEffect(() => {
     listItemsFetcher();

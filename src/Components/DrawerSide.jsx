@@ -1,11 +1,16 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import useTheme from "./useTheme";
+import UserFetcher from "./Fetchers/userFetcher";
+import { useSelector } from "react-redux";
+import DeleteSession from "./Login/DeleteSession";
 
 const DrawerSide = () => {
   const { theme, toggleTheme } = useTheme();
+  const user = useSelector((state) => state.user.user);
+  const loading = useSelector((state) => state.loading.loading);
   return (
     <div className="drawer-side pr-0 z-[100]">
+      <UserFetcher />
       <label
         htmlFor="my-drawer"
         aria-label="close sidebar"
@@ -33,33 +38,38 @@ const DrawerSide = () => {
             </a>
           </Link>
         </li>
-        <li className="menu-title text-left">My Account</li>
-        <li>
-          <Link to="/list/me">
-            <a className="flex gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="8" y1="6" x2="21" y2="6"></line>
-                <line x1="8" y1="12" x2="21" y2="12"></line>
-                <line x1="8" y1="18" x2="21" y2="18"></line>
-                <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                <line x1="3" y1="18" x2="3.01" y2="18"></line>
-              </svg>
-              Lists
-            </a>
-          </Link>
-        </li>
+        {user ? (
+          <>
+            <li className="menu-title text-left">My Account</li>
+            <li>
+              <Link to="/list/me">
+                <a className="flex gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                  </svg>
+                  Lists
+                </a>
+              </Link>
+            </li>
+          </>
+        ) : null}
+
         <label className="flex cursor-pointer gap-2 m-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -96,6 +106,38 @@ const DrawerSide = () => {
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
         </label>
+        <div className="flex w-full gap-3 m-3">
+          <div className="avatar self-center justify-center">
+            <div
+              className={`w-12 rounded-full ${loading ? " skeleton" : null}`}
+            >
+              <img
+                src={
+                  user?.avatar?.tmdb?.avatar_path
+                    ? `https://image.tmdb.org/t/p/w185${user?.avatar?.tmdb?.avatar_path}`
+                    : "https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg"
+                }
+              />
+            </div>
+          </div>
+
+          {loading ? (
+            <div className="skeleton h-4 w-full"></div>
+          ) : (
+            <div className="w-full text-left">
+              <p className="font-medium text-lg">
+                {user ? user?.username : "Guest"}
+              </p>
+              {user ? (
+                <DeleteSession />
+              ) : (
+                <Link to="/auth" className="text-slate-700 underline">
+                  Log in
+                </Link>
+              )}
+            </div>
+          )}
+        </div>
       </ul>
     </div>
   );

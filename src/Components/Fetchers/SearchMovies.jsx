@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { setSearch, setLoading } from "../Store/Action/movieAction";
 
 const FetcherSearch = ({ query, page }) => {
+  const sessionId = localStorage.getItem("session_id");
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
   const apiRDT = import.meta.env.VITE_TMDB_TOKEN;
 
@@ -16,14 +17,16 @@ const FetcherSearch = ({ query, page }) => {
   const fetchSearch = useCallback(async () => {
     dispatch(setLoading(true));
     try {
-      const header = {
+      let headers = {
         accept: "application/json",
-        Authorization: `Bearer ${apiRDT}`,
+        Authorization: "Bearer " + apiRDT,
       };
-      const response = await axios.get(
-        `https://api.themoviedb.org/3/search/multi?query=${query}&page=${page}&api_key=${apiKey}`,
-        { headers: header }
-      );
+
+      let url = `https://api.themoviedb.org/3/search/multi?query=${query}&page=${page}&api_key=${apiKey}`;
+      if (sessionId) {
+        url += `&session_id=${sessionId}`;
+      }
+      const response = await axios.get(url, { headers });
       const movieData = response.data;
       dispatch(setSearch(movieData));
       console.log(movieData);
@@ -32,7 +35,7 @@ const FetcherSearch = ({ query, page }) => {
     } finally {
       dispatch(setLoading(false));
     }
-  }, [apiKey, apiRDT, query, page, dispatch]);
+  }, [apiKey, apiRDT, query, page, dispatch, sessionId]);
 
   useEffect(() => {
     fetchSearch();

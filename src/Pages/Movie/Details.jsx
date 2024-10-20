@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setState } from "../../Components/Store/Action/movieAction";
@@ -11,6 +11,7 @@ const Details = () => {
   const detail = useSelector((state) => state.detail.detail);
   const loading = useSelector((state) => state.loading.loading);
   const itemState = useSelector((state) => state.itemState.itemState);
+  const user = useSelector((state) => state.user.user);
 
   const [isRating, setIsRating] = useState(false); //The visibility of value slider
   const ratingValue = itemState?.rated?.value || null;
@@ -26,6 +27,7 @@ const Details = () => {
   const closeRateMenu = () => setIsRating(false);
 
   const submitRating = async () => {
+    const sessionId = localStorage.getItem("session_id");
     const newRatingValue = tempRatingValue;
     setIsRating(true);
 
@@ -40,24 +42,20 @@ const Details = () => {
     const body = { value: newRatingValue };
 
     try {
-      let response;
+      let url;
       if (mediaType === "movie") {
-        response = await axios.post(
-          `https://api.themoviedb.org/3/movie/${itemState.id}/rating?api_key=${apiKey}`,
-          body,
-          { headers }
-        );
+        url = `https://api.themoviedb.org/3/movie/${itemState.id}/rating?api_key=${apiKey}`;
       } else if (mediaType === "tv") {
-        response = await axios.post(
-          `https://api.themoviedb.org/3/tv/${itemState.id}/rating?api_key=${apiKey}`,
-          body,
-          { headers }
-        );
+        url = `https://api.themoviedb.org/3/tv/${itemState.id}/rating?api_key=${apiKey}`;
       }
       const updatedItemState = {
         ...itemState,
         rated: { value: newRatingValue },
       };
+      if (sessionId) {
+        url += `&session_id=${sessionId}`;
+      }
+      const response = await axios.post(url, body, { headers });
       dispatch(setState(updatedItemState));
       console.log(response.data);
     } catch (error) {
@@ -73,6 +71,7 @@ const Details = () => {
   const deleteRating = async () => {
     const apiKey = import.meta.env.VITE_TMDB_API_KEY;
     const apiRDT = import.meta.env.VITE_TMDB_API_TOKEN;
+    const sessionId = localStorage.getItem("session_id");
 
     const headers = {
       accept: "application/json",
@@ -80,22 +79,20 @@ const Details = () => {
     };
 
     try {
-      let response;
+      let url;
       if (mediaType === "movie") {
-        response = await axios.delete(
-          `https://api.themoviedb.org/3/movie/${itemState.id}/rating?api_key=${apiKey}`,
-          { headers }
-        );
+        url = `https://api.themoviedb.org/3/movie/${itemState.id}/rating?api_key=${apiKey}`;
       } else if (mediaType === "tv") {
-        response = await axios.delete(
-          `https://api.themoviedb.org/3/tv/${itemState.id}/rating?api_key=${apiKey}`,
-          { headers }
-        );
+        url = `https://api.themoviedb.org/3/tv/${itemState.id}/rating?api_key=${apiKey}`;
+      }
+      if (sessionId) {
+        url += `&session_id=${sessionId}`;
       }
       const updatedItemState = {
         ...itemState,
         rated: "false",
       };
+      const response = await axios.post(url, { headers });
       dispatch(setState(updatedItemState));
       console.log(response.data);
     } catch (error) {
@@ -115,7 +112,7 @@ const Details = () => {
         {mediaType != "person" ? (
           <>
             {loading ? (
-              <div className="w-full rounded-none h-96 skeleton"></div>
+              <div className="w-full rounded-none min-h-96 skeleton"></div>
             ) : (
               <figure>
                 <img
@@ -125,7 +122,7 @@ const Details = () => {
                         detail.backdrop_path
                       : "https://usercontent.one/wp/www.vocaleurope.eu/wp-content/uploads/no-image.jpg?media=1642546813"
                   }
-                  className="object-cover w-full h-auto md:max-h-96"
+                  className="object-cover w-full min-h-96 md:max-h-96"
                   alt={detail.title || detail.name}
                 ></img>
               </figure>
@@ -185,7 +182,7 @@ const Details = () => {
             </div>
           ) : null}
         </div>
-        <hr className="border-slate-800 mx-5"></hr>
+        <div className="divider mx-5"></div>
         <div className="flex gap-6 my-3 justify-center">
           <div className="left-pane basis-3/5">
             <div className="main-details">
@@ -212,79 +209,94 @@ const Details = () => {
 
           <div className="right-pane">
             {mediaType != "person" ? (
-              <div className="">
-                {loading ? (
-                  <div className="flex w-full flex-col gap-2">
-                    <div className="skeleton h-4 w-full"></div>
-                    <div className="skeleton h-6 w-16"></div>
-                  </div>
-                ) : (
-                  <div className="rating-cont">
-                    {ratingValue === null ? (
-                      <div>
-                        <p>No rating given yet. Give one?</p>
-                        {isRating === false ? (
-                          <button
-                            className="btn btn-success my-3 h-8 min-h-8"
-                            onClick={openRateMenu}
-                          >
-                            Give a rating
-                          </button>
-                        ) : null}
+              <>
+                {user ? (
+                  <div className="">
+                    {loading ? (
+                      <div className="flex w-full flex-col gap-2">
+                        <div className="skeleton h-4 w-full"></div>
+                        <div className="skeleton h-6 w-16"></div>
                       </div>
                     ) : (
-                      <div>
-                        <p className="text-left text-sm">
-                          {isRating === false
-                            ? "My rating: "
-                            : "Previous rating : "}
-                          <span className="text-2xl font-extrabold">
-                            {ratingValue}
-                          </span>
-                        </p>
-                        {isRating === false ? (
-                          <div className="flex my-3 gap-3">
-                            <button
-                              className="btn btn-warning h-8 min-h-8"
-                              onClick={openRateMenu}
-                            >
-                              Change rating
-                            </button>
-                            <button
-                              className="btn btn-error h-8 min-h-8"
-                              onClick={deleteRating}
-                            >
-                              Delete my rating
-                            </button>
+                      <div className="rating-cont">
+                        {ratingValue === null ? (
+                          <div>
+                            <p>No rating given yet. Give one?</p>
+                            {isRating === false ? (
+                              <button
+                                className="btn btn-success my-3 h-8 min-h-8"
+                                onClick={openRateMenu}
+                              >
+                                Give a rating
+                              </button>
+                            ) : null}
                           </div>
-                        ) : null}
-                      </div>
-                    )}
+                        ) : (
+                          <div>
+                            <p className="text-left text-sm">
+                              {isRating === false
+                                ? "My rating: "
+                                : "Previous rating : "}
+                              <span className="text-2xl font-extrabold">
+                                {ratingValue}
+                              </span>
+                            </p>
+                            {isRating === false ? (
+                              <div className="flex my-3 gap-3">
+                                <button
+                                  className="btn btn-warning h-8 min-h-8"
+                                  onClick={openRateMenu}
+                                >
+                                  Change rating
+                                </button>
+                                <button
+                                  className="btn btn-error h-8 min-h-8"
+                                  onClick={deleteRating}
+                                >
+                                  Delete my rating
+                                </button>
+                              </div>
+                            ) : null}
+                          </div>
+                        )}
 
-                    {isRating && (
-                      <div>
-                        <Slider
-                          onChange={(newValue) => setTempRatingValue(newValue)}
-                        />
-                        <div className="flex my-3 gap-3">
-                          <button
-                            className="btn btn-primary h-8 min-h-8"
-                            onClick={closeRateMenu}
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            className="btn btn-success  h-8 min-h-8"
-                            onClick={submitRating}
-                          >
-                            Submit Rating
-                          </button>
-                        </div>
+                        {isRating && (
+                          <div>
+                            <Slider
+                              onChange={(newValue) =>
+                                setTempRatingValue(newValue)
+                              }
+                            />
+                            <div className="flex my-3 gap-3">
+                              <button
+                                className="btn btn-primary h-8 min-h-8"
+                                onClick={closeRateMenu}
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                className="btn btn-success  h-8 min-h-8"
+                                onClick={submitRating}
+                              >
+                                Submit Rating
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
+                ) : (
+                  <div className="text-left font-bold">
+                    <p>You need to be logged in to peform certain actions.</p>
+                    <Link to="/auth">
+                      <a className="btn-secondery btn my-3 h-8 min-h-8">
+                        Log in
+                      </a>
+                    </Link>
+                  </div>
                 )}
-              </div>
+              </>
             ) : (
               <figure>
                 <img
