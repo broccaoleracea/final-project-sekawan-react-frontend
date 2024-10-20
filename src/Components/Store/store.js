@@ -13,6 +13,7 @@ const store = configureStore({
     list: listReducer,
     itemState: stateReducer,
     loading: searchReducer,
+    theme: searchReducer,
   },
 });
 export default store;

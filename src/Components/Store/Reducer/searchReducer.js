@@ -1,7 +1,8 @@
-import { SET_SEARCH, SET_LOADING } from "../Action/movieAction";
+import { SET_SEARCH, SET_LOADING, SET_THEME } from "../Action/movieAction";
 const DefaultValue = {
   search: [],
   loading: false,
+  theme: localStorage.getItem("theme") || "light", // Default to light if nothing is set
 };
 
 const searchReducer = (state = DefaultValue, action) => {
@@ -15,6 +16,11 @@ const searchReducer = (state = DefaultValue, action) => {
       return {
         ...state,
         loading: action.payload,
+      };
+    case SET_THEME:
+      return {
+        ...state,
+        theme: action.payload,
       };
     default:
       return state;

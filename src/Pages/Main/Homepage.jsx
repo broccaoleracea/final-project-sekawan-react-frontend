@@ -1,4 +1,3 @@
-import React from "react";
 import MoviePoster from "../../Components/Cards/MoviePoster";
 import TrendMovieFetcher from "../../Components/Fetchers/TrendingMovieFetcher";
 import { useSelector } from "react-redux";
