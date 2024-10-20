@@ -1,14 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const PersonCard = ({ imgUrl, name, id }) => {
+const PersonCard = ({ loadingState, imgUrl, name, id }) => {
   return (
     <div>
       <Link to={`/detail/person/${id}`}>
         <div className="card w-full">
           <div className="h-64 flex mb-1 justify-center">
             <div className="avatar self-center justify-center  p-3">
-              <div className="w-full rounded-full">
+              <div
+                className={`w-full rounded-full ${
+                  loadingState ? " skeleton" : null
+                }`}
+              >
                 <img
                   src={
                     imgUrl
@@ -21,7 +25,11 @@ const PersonCard = ({ imgUrl, name, id }) => {
           </div>
           <div className="card-body card-end p-0">
             <div className="tooltip" data-tip={name}>
-              <h2 className="card-title text-sm line-clamp-1">{name}</h2>
+              {loadingState ? (
+                <div className="skeleton h-4 w-full"></div>
+              ) : (
+                <h2 className="card-title text-sm line-clamp-1">{name}</h2>
+              )}
             </div>
           </div>
         </div>

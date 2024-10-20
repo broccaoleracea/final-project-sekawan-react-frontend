@@ -18,12 +18,10 @@ const SearchPage = () => {
     <div>
       <FetcherSearch query={query} page={page} />
 
-      {/* <span className="loading loading-spinner loading-lg"></span> */}
-
       <div className="">
         {search ? (
-          <div className="main px-5 text-left">
-            <div className="flex justify-between ">
+          <div className="main px-5 text-left flex flex-col justify-center items-center">
+            <div className="flex justify-between w-full ">
               {loading ? (
                 <>
                   <div className="flex w-52 flex-col gap-4">
@@ -57,7 +55,7 @@ const SearchPage = () => {
               )}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 my-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 my-4 max-w-screen-xl">
               {loading ? (
                 <>
                   {Array.from({ length: 20 }, (_, index) => (

@@ -1,17 +1,20 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { setTrend } from "../../Components/Store/Action/movieAction";
+import {
+  setLoading,
+  setTrend,
+} from "../../Components/Store/Action/movieAction";
 
 const TrendMovieFetcher = () => {
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
   const apiRDT = import.meta.env.VITE_TMDB_API_TOKEN;
 
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+
   const fetchMovieList = useCallback(async () => {
-    setLoading(true);
+    dispatch(setLoading(true));
     try {
       let header = {
         accept: "application/json",
@@ -30,7 +33,7 @@ const TrendMovieFetcher = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
-      setLoading(false);
+      dispatch(setLoading(false));
     }
   }, [dispatch, apiKey, apiRDT]);
 
@@ -38,7 +41,7 @@ const TrendMovieFetcher = () => {
     fetchMovieList();
   }, [fetchMovieList]);
 
-  return loading ? <div className="spinner"></div> : null;
+  return null;
 };
 TrendMovieFetcher.propTypes = {};
 

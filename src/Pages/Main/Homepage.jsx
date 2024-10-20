@@ -2,11 +2,11 @@ import React from "react";
 import MoviePoster from "../../Components/Cards/MoviePoster";
 import TrendMovieFetcher from "../../Components/Fetchers/TrendingMovieFetcher";
 import { useSelector } from "react-redux";
-import Slider from "../../Components/Slider";
 import PersonCard from "../../Components/Cards/PersonCard";
 
 const Homepage = () => {
   const trend = useSelector((state) => state.trend.trend);
+  const loading = useSelector((state) => state.loading.loading);
   return (
     <div>
       {/* Hero Element */}
@@ -16,9 +16,10 @@ const Homepage = () => {
           <div className="max-w-xl">
             <h1 className="mb-5 text-5xl font-bold">Welcome to Nightflix</h1>
             <p className="mb-5">
-              Discover various movies curated just for you. or idk this thing
-              doesnt have any complex algorithm i just wanted to sounds cool
-              okay? alright then. wonderhoy~
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet
+              praesentium neque, molestias ducimus ex quidem quo cum ut cumque
+              aperiam voluptatibus minima dignissimos soluta unde
+              necessitatibus. Deserunt provident fugiat odit.
             </p>
           </div>
         </div>
@@ -29,24 +30,32 @@ const Homepage = () => {
         <h1 className="text-2xl font-black text-left px-4">On Trending : </h1>
         <div className="carousel carousel-center max-w-full  space-x-3 p-3">
           <TrendMovieFetcher />
-          {trend?.map((item) => (
-            <div key={item.id} className="carousel-item max-w-48">
-              {item.media_type === "person" ? (
-                <PersonCard
-                  id={item.id}
-                  name={item.name}
-                  imgUrl={item.profile_path}
-                />
-              ) : (
-                <MoviePoster
-                  id={item.id}
-                  mediaType={item.media_type}
-                  title={item.media_type === "tv" ? item.name : item.title}
-                  imgUrl={item.poster_path}
-                />
-              )}
-            </div>
-          ))}
+          {(trend && trend.length > 0 ? trend : Array.from({ length: 10 })).map(
+            (item, index) => (
+              <div key={item?.id || index} className="carousel-item max-w-48">
+                {item?.media_type === "person" ? (
+                  <PersonCard
+                    id={item?.id || `placeholder-${index}`}
+                    name={item?.name || "Loading..."}
+                    imgUrl={item?.profile_path || null}
+                    loadingState={loading || !item}
+                  />
+                ) : (
+                  <MoviePoster
+                    id={item?.id || `placeholder-${index}`}
+                    mediaType={item?.media_type || "loading"}
+                    title={
+                      item?.media_type === "tv"
+                        ? item?.name || "Loading..."
+                        : item?.title || "Loading..."
+                    }
+                    imgUrl={item?.poster_path || null}
+                    loadingState={loading || !item}
+                  />
+                )}
+              </div>
+            )
+          )}
         </div>
       </div>
     </div>

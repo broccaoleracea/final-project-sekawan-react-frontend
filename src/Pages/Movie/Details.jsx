@@ -9,6 +9,7 @@ import Slider from "../../Components/Slider";
 const Details = () => {
   const { id, mediaType } = useParams();
   const detail = useSelector((state) => state.detail.detail);
+  const loading = useSelector((state) => state.loading.loading);
   const itemState = useSelector((state) => state.itemState.itemState);
 
   const [isRating, setIsRating] = useState(false); //The visibility of value slider
@@ -20,9 +21,7 @@ const Details = () => {
     2: "Male",
     3: "Non-binary",
   };
-  if (!detail) {
-    return <div>Loading...</div>;
-  }
+
   const openRateMenu = () => setIsRating(true);
   const closeRateMenu = () => setIsRating(false);
 
@@ -114,50 +113,75 @@ const Details = () => {
       <DetailMovieFetcher id={id} type={mediaType} />
       <div className="main text-left">
         {mediaType != "person" ? (
-          <figure>
-            <img
-              src={
-                detail.backdrop_path
-                  ? "https://image.tmdb.org/t/p/w1280" + detail.backdrop_path
-                  : "https://usercontent.one/wp/www.vocaleurope.eu/wp-content/uploads/no-image.jpg?media=1642546813"
-              }
-              className="object-cover w-full h-auto md:max-h-96"
-              alt={detail.title || detail.name}
-            ></img>
-          </figure>
+          <>
+            {loading ? (
+              <div className="w-full rounded-none h-96 skeleton"></div>
+            ) : (
+              <figure>
+                <img
+                  src={
+                    detail.backdrop_path
+                      ? "https://image.tmdb.org/t/p/w1280" +
+                        detail.backdrop_path
+                      : "https://usercontent.one/wp/www.vocaleurope.eu/wp-content/uploads/no-image.jpg?media=1642546813"
+                  }
+                  className="object-cover w-full h-auto md:max-h-96"
+                  alt={detail.title || detail.name}
+                ></img>
+              </figure>
+            )}
+          </>
         ) : null}
         <div className="w-full px-6 my-4 flex justify-between items-end">
           <div className="title">
-            <h1 className="text-2xl font-black">
-              {detail.title || detail.name}
-            </h1>
-            <p className="text-slate-600  italic">
-              {" "}
-              {mediaType != "person"
-                ? detail.original_title || detail.original_name
-                : null}
-            </p>
+            {loading ? (
+              <div className="flex w-52 flex-col gap-2">
+                <div className="skeleton h-8 w-96"></div>
+                {mediaType != "person" ? (
+                  <div className="skeleton h-4 w-36"></div>
+                ) : null}
+              </div>
+            ) : (
+              <>
+                <h1 className="text-2xl font-black">
+                  {detail.title || detail.name}
+                </h1>
+                {mediaType != "person" ? (
+                  <p className="text-slate-600  italic">
+                    {detail.original_title || detail.original_name}
+                  </p>
+                ) : null}
+              </>
+            )}
           </div>
           {mediaType != "person" ? (
-            <div className="rating align-baseline items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="align-baseline"
-              >
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-              </svg>
-              <h1 className="text-4xl font-black ml-2">
-                {" "}
-                {detail.vote_average}
-              </h1>
+            <div className="">
+              {loading ? (
+                <div className="flex w-20 flex-col gap-2">
+                  <div className="skeleton h-8 w-full"></div>
+                </div>
+              ) : (
+                <div className="rating align-baseline items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="align-baseline"
+                  >
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <h1 className="text-4xl font-black ml-2">
+                    {" "}
+                    {detail.vote_average}
+                  </h1>
+                </div>
+              )}
             </div>
           ) : null}
         </div>
@@ -166,10 +190,21 @@ const Details = () => {
           <div className="left-pane basis-3/5">
             <div className="main-details">
               <p className="text-left">
-                {detail.details || detail.overview || detail.biography || (
-                  <span className="text-slate-600 italic">
-                    No description provided.
-                  </span>
+                {loading ? (
+                  <div className="flex w-full flex-col gap-2">
+                    <div className="skeleton h-4 w-full"></div>
+                    <div className="skeleton h-4 w-full"></div>
+                    <div className="skeleton h-4 w-full"></div>
+                    <div className="skeleton h-4 w-96"></div>
+                  </div>
+                ) : (
+                  <>
+                    {detail.details || detail.overview || detail.biography || (
+                      <span className="text-slate-600 italic">
+                        No description provided.
+                      </span>
+                    )}
+                  </>
                 )}
               </p>
             </div>
@@ -177,67 +212,76 @@ const Details = () => {
 
           <div className="right-pane">
             {mediaType != "person" ? (
-              <div className="rating-cont">
-                {ratingValue === null ? (
-                  <div>
-                    <p>No rating given yet. Give one?</p>
-                    {isRating === false ? (
-                      <button
-                        className="btn btn-success my-3 h-8 min-h-8"
-                        onClick={openRateMenu}
-                      >
-                        Give a rating
-                      </button>
-                    ) : null}
+              <div className="">
+                {loading ? (
+                  <div className="flex w-full flex-col gap-2">
+                    <div className="skeleton h-4 w-full"></div>
+                    <div className="skeleton h-6 w-16"></div>
                   </div>
                 ) : (
-                  <div>
-                    <p className="text-left text-sm">
-                      {isRating === false
-                        ? "My rating: "
-                        : "Previous rating : "}
-                      <span className="text-2xl font-extrabold">
-                        {ratingValue}
-                      </span>
-                    </p>
-                    {isRating === false ? (
-                      <div className="flex my-3 gap-3">
-                        <button
-                          className="btn btn-warning h-8 min-h-8"
-                          onClick={openRateMenu}
-                        >
-                          Change rating
-                        </button>
-                        <button
-                          className="btn btn-error h-8 min-h-8"
-                          onClick={deleteRating}
-                        >
-                          Delete my rating
-                        </button>
+                  <div className="rating-cont">
+                    {ratingValue === null ? (
+                      <div>
+                        <p>No rating given yet. Give one?</p>
+                        {isRating === false ? (
+                          <button
+                            className="btn btn-success my-3 h-8 min-h-8"
+                            onClick={openRateMenu}
+                          >
+                            Give a rating
+                          </button>
+                        ) : null}
                       </div>
-                    ) : null}
-                  </div>
-                )}
+                    ) : (
+                      <div>
+                        <p className="text-left text-sm">
+                          {isRating === false
+                            ? "My rating: "
+                            : "Previous rating : "}
+                          <span className="text-2xl font-extrabold">
+                            {ratingValue}
+                          </span>
+                        </p>
+                        {isRating === false ? (
+                          <div className="flex my-3 gap-3">
+                            <button
+                              className="btn btn-warning h-8 min-h-8"
+                              onClick={openRateMenu}
+                            >
+                              Change rating
+                            </button>
+                            <button
+                              className="btn btn-error h-8 min-h-8"
+                              onClick={deleteRating}
+                            >
+                              Delete my rating
+                            </button>
+                          </div>
+                        ) : null}
+                      </div>
+                    )}
 
-                {isRating && (
-                  <div>
-                    <Slider
-                      onChange={(newValue) => setTempRatingValue(newValue)}
-                    />
-                    <div className="flex my-3 gap-3">
-                      <button
-                        className="btn btn-primary h-8 min-h-8"
-                        onClick={closeRateMenu}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        className="btn btn-success  h-8 min-h-8"
-                        onClick={submitRating}
-                      >
-                        Submit Rating
-                      </button>
-                    </div>
+                    {isRating && (
+                      <div>
+                        <Slider
+                          onChange={(newValue) => setTempRatingValue(newValue)}
+                        />
+                        <div className="flex my-3 gap-3">
+                          <button
+                            className="btn btn-primary h-8 min-h-8"
+                            onClick={closeRateMenu}
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            className="btn btn-success  h-8 min-h-8"
+                            onClick={submitRating}
+                          >
+                            Submit Rating
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -255,33 +299,63 @@ const Details = () => {
               </figure>
             )}
 
-            <div className="stats w-full stats-vertical shadow">
+            <div className="stats w-full stats-vertical shadow min-w-48">
               {mediaType === "person" ? (
-                <div className="stat">
-                  <div className="stat-title">Gender</div>
-                  <div className="stat-value">
-                    {genderMap[detail.gender] || "Unknown"}
-                  </div>
+                <div className="stat  px-0">
+                  {loading ? (
+                    <div className="flex w-full flex-col gap-2">
+                      <div className="skeleton h-4 w-20"></div>
+                      <div className="skeleton h-6 w-full"></div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="stat-title">Gender</div>
+                      <div className="stat-value">
+                        {genderMap[detail.gender] || "Unknown"}
+                      </div>
+                    </>
+                  )}
                 </div>
               ) : (
                 <>
-                  <div className="stat">
-                    <div className="stat-title">Popularity</div>
-                    <div className="stat-value">{detail.popularity}</div>
+                  <div className="stat px-0">
+                    {loading ? (
+                      <div className="flex w-full flex-col gap-2">
+                        <div className="skeleton h-4 w-20"></div>
+                        <div className="skeleton h-6 w-full"></div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="stat-title">Popularity</div>
+                        <div className="stat-value">{detail.popularity}</div>
+                      </>
+                    )}
                   </div>
-                  <div className="stat">
-                    <div className="stat-title">Genres</div>
-                    <div className="stat-value">
-                      {detail.genres ? (
-                        detail.genres.map((genre) => (
-                          <h3 className="text-lg font-semibold" key={genre.id}>
-                            {genre.name}
-                          </h3>
-                        ))
-                      ) : (
-                        <p>Loading genres...</p>
-                      )}
-                    </div>
+                  <div className="stat px-0">
+                    {loading ? (
+                      <div className="flex w-full flex-col gap-2">
+                        <div className="skeleton h-4 w-20"></div>
+                        <div className="skeleton h-6 w-full"></div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="stat-title">Genres</div>
+                        <div className="stat-value">
+                          {detail.genres ? (
+                            detail.genres.map((genre) => (
+                              <h3
+                                className="text-lg font-semibold"
+                                key={genre.id}
+                              >
+                                {genre.name}
+                              </h3>
+                            ))
+                          ) : (
+                            <p>Loading genres...</p>
+                          )}
+                        </div>
+                      </>
+                    )}
                   </div>
                 </>
               )}

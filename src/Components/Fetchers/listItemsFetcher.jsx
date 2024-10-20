@@ -1,20 +1,17 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { setMovieDetail } from "../Store/Action/detailAction";
-import { setList } from "../Store/Action/movieAction";
+import { setList, setLoading } from "../Store/Action/movieAction";
 
-const listItemsFetcher = ({ id }) => {
+const ListItemsFetcher = ({ id }) => {
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
   const apiToken = import.meta.env.VITE_TMDB_API_TOKEN;
-  const accId = import.meta.env.VITE_TMDB_ACC_ID;
 
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
 
   const listItemsFetcher = useCallback(async () => {
-    setLoading(true);
+    dispatch(setLoading(true));
     try {
       const header = {
         accept: "application/json",
@@ -30,8 +27,9 @@ const listItemsFetcher = ({ id }) => {
       dispatch(setList(movieData));
     } catch (error) {
       console.error("Error fetching data:", error);
+      s;
     } finally {
-      setLoading(false);
+      dispatch(setLoading(false));
     }
   }, [dispatch, apiKey, apiToken, id]);
 
@@ -39,9 +37,9 @@ const listItemsFetcher = ({ id }) => {
     listItemsFetcher();
   }, [listItemsFetcher]);
 
-  return loading ? <div className="spinner"></div> : null;
+  return null;
 };
 
-listItemsFetcher.propTypes = {};
+ListItemsFetcher.propTypes = {};
 
-export default listItemsFetcher;
+export default ListItemsFetcher;

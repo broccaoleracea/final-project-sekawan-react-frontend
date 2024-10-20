@@ -3,17 +3,16 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { setMovieDetail } from "../Store/Action/detailAction";
-import { setState } from "../Store/Action/movieAction";
+import { setLoading, setState } from "../Store/Action/movieAction";
 
 const DetailMovieFetcher = ({ id, type }) => {
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
   const apiRDT = import.meta.env.VITE_TMDB_API_TOKEN;
 
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
 
   const fetchMovieDetails = useCallback(async () => {
-    setLoading(true);
+    dispatch(setLoading(true));
     try {
       const header = {
         accept: "application/json",
@@ -62,7 +61,7 @@ const DetailMovieFetcher = ({ id, type }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
-      setLoading(false);
+      dispatch(setLoading(false));
     }
   }, [dispatch, apiKey, apiRDT, id, type]);
 
@@ -70,7 +69,7 @@ const DetailMovieFetcher = ({ id, type }) => {
     fetchMovieDetails();
   }, [fetchMovieDetails]);
 
-  return loading ? <div className="spinner"></div> : null;
+  return null;
 };
 
 DetailMovieFetcher.propTypes = {

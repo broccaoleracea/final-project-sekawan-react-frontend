@@ -1,10 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const MovieCardHorizontal = ({ id, posterUrl, title, itemCount, desc }) => {
+const MovieCardHorizontal = ({
+  loadingState,
+  id,
+  posterUrl,
+  title,
+  itemCount,
+  desc,
+}) => {
   return (
     <Link to={`/list/${id}`}>
-      <div className="card card-compact card-side bg-base-100 shadow-xl text-left">
+      <div
+        className={`card card-compact card-side  shadow-xl text-left ${
+          loadingState ? " skeleton" : " bg-base-100"
+        }`}
+      >
         {posterUrl ? (
           <figure className="max-w-28">
             <img
@@ -14,17 +25,30 @@ const MovieCardHorizontal = ({ id, posterUrl, title, itemCount, desc }) => {
           </figure>
         ) : null}
         <div className="card-body">
-          <h2 className="card-title">{title}</h2>
-          <p className="">
-            {desc === "" ? (
-              <span className="italic text-slate-600">
-                No description provided.
-              </span>
-            ) : (
-              desc
-            )}
-          </p>
-          <p className="text-slate-600 ">{itemCount} items </p>
+          {loadingState ? (
+            <div className="skeleton h-4 w-full"></div>
+          ) : (
+            <h2 className="card-title">{title}</h2>
+          )}
+          {loadingState ? (
+            <div className="skeleton h-4 w-full"></div>
+          ) : (
+            <p className="">
+              {desc === "" ? (
+                <span className="italic text-slate-600">
+                  No description provided.
+                </span>
+              ) : (
+                desc
+              )}
+            </p>
+          )}
+
+          {loadingState ? (
+            <div className="skeleton h-4 w-28"></div>
+          ) : (
+            <p className="text-slate-600 ">{itemCount} items </p>
+          )}
           {/* <div className="card-actions justify-end">
             <button className="btn btn-primary">Watch</button>
           </div> */}
