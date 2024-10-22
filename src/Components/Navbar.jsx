@@ -42,7 +42,7 @@ export const Navbar = () => {
           <SearchBar />
         </div>
       </div>
-      {user ? null : (
+      {!user ? (
         <div
           className={`w-full p-1 border 
         ${
@@ -53,13 +53,13 @@ export const Navbar = () => {
         >
           <p className="text-center">
             You're not logged in to TMDB. Please{" "}
-            <Link to="/" className="underline">
+            <Link to="/auth" className="underline">
               log in
             </Link>{" "}
             for the best user experience.
           </p>
         </div>
-      )}
+      ) : null}
     </>
   );
 };

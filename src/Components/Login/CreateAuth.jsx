@@ -1,11 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const CreateAuth = () => {
   const [token, setToken] = useState(null); // token
   const user = useSelector((state) => state.user.user);
-  const [message, setMessage] = useState(""); //  success/error messages
+  const [message, setMessage] = useState(""); // success/error messages
+  const navigate = useNavigate();
 
   // create authentication token
   const createReqToken = async () => {
@@ -36,7 +38,7 @@ const CreateAuth = () => {
   };
 
   // create session after successful authentication
-  const createSession = async () => {
+  const CreateSession = async () => {
     const apiKey = import.meta.env.VITE_TMDB_API_KEY;
     const apiRDT = import.meta.env.VITE_TMDB_API_TOKEN;
 
@@ -68,6 +70,9 @@ const CreateAuth = () => {
     } catch (error) {
       console.error(error.response?.data || error.message);
       setMessage("Error while creating session.");
+    } finally {
+      navigate("/");
+      window.location.reload();
     }
   };
 
@@ -82,7 +87,7 @@ const CreateAuth = () => {
         <button
           className="btn btn-primary w-full"
           onClick={createReqToken}
-          disabled={user || user === null}
+          disabled={user || user != null}
         >
           Sign in using your TMDB account{" "}
           <svg
@@ -108,7 +113,7 @@ const CreateAuth = () => {
       <div className="">
         <button
           className="btn btn-accent w-full"
-          onClick={createSession}
+          onClick={CreateSession}
           disabled={!token}
         >
           Validate your login{" "}

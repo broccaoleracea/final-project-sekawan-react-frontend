@@ -20,11 +20,8 @@ const DetailMovieFetcher = ({ id, type }) => {
       };
       let response, responseState;
       if (type == "movie") {
-        console.log(
-          `Accessed : https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey} and https://api.themoviedb.org/3/movie/${id}/account_states?api_key=${apiKey}`
-        );
         response = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`,
+          `https://api.themoviedb.org/3/movie/${id}?append_to_response=videos&api_key=${apiKey}`,
           { headers: header }
         );
         responseState = await axios.get(
@@ -32,11 +29,8 @@ const DetailMovieFetcher = ({ id, type }) => {
           { headers: header }
         );
       } else if (type == "tv") {
-        console.log(
-          `Accessed : https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey} and https://api.themoviedb.org/3/tv/${id}/account_states?api_key=${apiKey}`
-        );
         response = await axios.get(
-          `https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}`,
+          `https://api.themoviedb.org/3/tv/${id}?append_to_response=videos&api_key=${apiKey}`,
           { headers: header }
         );
         responseState = await axios.get(
@@ -55,7 +49,6 @@ const DetailMovieFetcher = ({ id, type }) => {
       const movieData = response.data;
       const stateData = responseState?.data;
       console.log(movieData, stateData);
-      console.log(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`);
       dispatch(setMovieDetail(movieData));
       dispatch(setState(stateData));
     } catch (error) {

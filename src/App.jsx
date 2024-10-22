@@ -11,6 +11,7 @@ import ListDetail from "./Pages/Lists/ListDetail";
 import TestPage from "./Pages/TestPage";
 import DrawerSide from "./Components/DrawerSide";
 import AuthTMDB from "./Pages/AuthTMDB";
+import Rated from "./Pages/Main/Rated";
 
 function App() {
   return (
@@ -29,7 +30,8 @@ function App() {
             <Route path="/detail/:mediaType/:id" element={<Details />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/auth" element={<AuthTMDB />} />
-            <Route path="/list/me" element={<MyLists />} />
+            <Route path="/u/:uid/list/" element={<MyLists />} />
+            <Route path="/u/:uid/rated/" element={<Rated />} />
             <Route path="/list/:id" element={<ListDetail />} />
             <Route path="/*" element={<Homepage />} />
             <Route path="/testpage" element={<TestPage />} />

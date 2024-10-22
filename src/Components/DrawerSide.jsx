@@ -42,7 +42,7 @@ const DrawerSide = () => {
           <>
             <li className="menu-title text-left">My Account</li>
             <li>
-              <Link to="/list/me">
+              <Link to="me/list">
                 <a className="flex gap-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -64,6 +64,32 @@ const DrawerSide = () => {
                     <line x1="3" y1="18" x2="3.01" y2="18"></line>
                   </svg>
                   Lists
+                </a>
+              </Link>
+            </li>
+            <li>
+              <Link to={`/u/${user.id}/rated`}>
+                <a className="flex gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                  </svg>
+                  Rated
                 </a>
               </Link>
             </li>

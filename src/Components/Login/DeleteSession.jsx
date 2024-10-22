@@ -2,11 +2,13 @@ import axios from "axios";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../Store/Action/userAction";
+import { useNavigate } from "react-router-dom";
 
 const DeleteSession = () => {
   const [message, setMessage] = useState(""); // success/error messages
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   // delete session
   const delSession = async () => {
     const apiKey = import.meta.env.VITE_TMDB_API_KEY;
@@ -36,6 +38,9 @@ const DeleteSession = () => {
     } catch (error) {
       console.error(error.response?.data || error.message);
       setMessage("Error while deleting session.");
+    } finally {
+      navigate("/");
+      window.location.reload();
     }
   };
 
