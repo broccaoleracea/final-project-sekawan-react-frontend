@@ -1,9 +1,10 @@
-export const SET_TREND = "SET_TREND";
 export const SET_LOADING = "SET_LOADING";
 export const setLoading = (loading) => ({
   type: SET_LOADING,
   payload: loading,
 });
+
+export const SET_TREND = "SET_TREND";
 export const setTrend = (trend) => {
   return {
     type: SET_TREND,
@@ -40,6 +41,14 @@ export const setTheme = (theme) => {
   return {
     type: SET_THEME,
     payload: theme,
+  };
+};
+
+export const SET_TOP = "SET_TOP";
+export const setTop = (topRated) => {
+  return {
+    type: SET_TOP,
+    payload: topRated,
   };
 };
 

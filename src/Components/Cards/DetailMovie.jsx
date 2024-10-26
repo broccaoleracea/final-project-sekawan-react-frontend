@@ -1,7 +1,7 @@
+/* eslint-disable react/prop-types */
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { setList } from "../Store/Action/movieAction";
 import Slider from "../Slider";
 import { useDispatch } from "react-redux";
 
@@ -30,7 +30,6 @@ const DetailMovie = ({
 
   const handleLinkClick = (e) => {
     if (showTooltip) {
-      // Prevent link navigation if tooltip is open
       e.preventDefault();
     }
   };
@@ -60,8 +59,8 @@ const DetailMovie = ({
         url += `&session_id=${sessionId}`;
       }
       const response = await axios.post(url, body, { headers });
+      console.log(response);
       onRatingSubmit({ id, rating: newRatingValue });
-      //dispatch the rated data?
     } catch (error) {
       console.error(
         "Error posting rating:",
@@ -98,7 +97,7 @@ const DetailMovie = ({
       }
 
       const response = await axios.delete(url, { headers });
-
+      console.log(response);
       dispatch({
         type: "DELETE_RATING_SUCCESS",
         payload: { id, type },
@@ -127,8 +126,8 @@ const DetailMovie = ({
             />
           </figure>
         ) : null}
-        <div className="card-body">
-          <div className="card-head flex justify-around">
+        <div className="card-body flex-col flex justify-between">
+          <div className="card-head flex justify-between">
             {loadingState ? (
               <>
                 <div className="skeleton h-4 w-full"></div>
@@ -137,7 +136,7 @@ const DetailMovie = ({
             ) : (
               <>
                 <h2 className="card-title">{title}</h2>
-                <span className="font-black ml-2">
+                <span className="font-black ml-2 align-baseline items-center min-w-fit">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="12"
@@ -152,7 +151,7 @@ const DetailMovie = ({
                   >
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                   </svg>
-                  {rateAvg}
+                  {Number(rateAvg?.toFixed(1))}
                 </span>
               </>
             )}
@@ -175,7 +174,7 @@ const DetailMovie = ({
           {loadingState && incRatingOpt ? (
             <div className="skeleton h-4 w-28"></div>
           ) : (
-            <div className="flex justify-around">
+            <div className="flex justify-between">
               <div className="text-left ">
                 My rating :{" "}
                 <span className="font-bold text-lg">{myRating}</span>
@@ -188,9 +187,9 @@ const DetailMovie = ({
                   {showTooltip ? "Cancel" : "Change rating"}
                 </button>
                 {showTooltip && (
-                  <div className="absolute top-full mt-2 p-4 min-w-96 bg-gray-800 text-white rounded-lg shadow-lg">
+                  <div className="absolute top-full mt-2 p-4 w-64 bg-base-200 rounded-lg shadow-lg z-50">
                     <div>
-                      <h4>Change rating</h4>
+                      <h4 className="mb-2">Change rating</h4>
                       <Slider
                         onChange={(newValue) => setTempRatingValue(newValue)}
                       />

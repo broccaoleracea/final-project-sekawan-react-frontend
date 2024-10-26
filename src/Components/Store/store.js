@@ -9,6 +9,7 @@ import userReducer from "./Reducer/userReducer";
 const store = configureStore({
   reducer: {
     trend: trendReducer,
+    topRated: trendReducer,
     detail: detailReducer,
     search: searchReducer,
     list: listReducer,

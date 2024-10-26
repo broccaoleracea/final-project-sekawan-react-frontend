@@ -58,7 +58,7 @@ const CreateAuth = () => {
         { headers }
       );
 
-      //set session to expire
+      //set session to expire, but not important for now
       // const expirationTime = new Date().getTime() + 3600000; // 1h (in ms)
       // localStorage.setItem("session_expiration", expirationTime);
 
@@ -66,7 +66,6 @@ const CreateAuth = () => {
       localStorage.setItem("session_id", sessionId);
 
       setMessage("Session successfully created!");
-      // window.location.href = "/";
     } catch (error) {
       console.error(error.response?.data || error.message);
       setMessage("Error while creating session.");

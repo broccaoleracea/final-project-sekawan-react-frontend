@@ -30,7 +30,7 @@ function App() {
             <Route path="/detail/:mediaType/:id" element={<Details />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/auth" element={<AuthTMDB />} />
-            <Route path="/u/:uid/list/" element={<MyLists />} />
+            <Route path="/u/:uid/lists/" element={<MyLists />} />
             <Route path="/u/:uid/rated/" element={<Rated />} />
             <Route path="/list/:id" element={<ListDetail />} />
             <Route path="/*" element={<Homepage />} />

@@ -188,12 +188,12 @@ const Details = () => {
               ) : null}
             </div>
             <div className="divider"></div>
-            <div className="flex gap-6 px-6 justify-center">
-              <div className="left-pane basis-5/6 overflow-hidden flex-shrink-0">
+            <div className="flex gap-6 px-6 justify-center max-w-screen-xl w-full">
+              <div className="flex-1 left-pane basis-4/6 overflow-x-clip overflow-hidden">
                 <div className="main-details">
                   <p className="text-left">
                     {loading ? (
-                      <div className="flex w-full flex-col gap-2">
+                      <div className="flex flex-col gap-2">
                         <div className="skeleton h-4 w-full"></div>
                         <div className="skeleton h-4 w-full"></div>
                         <div className="skeleton h-4 w-full"></div>
@@ -212,8 +212,8 @@ const Details = () => {
                     )}
                   </p>
 
-                  <div className="my-5">
-                    <div className="flex justify-between max-w-full w-full">
+                  <div className="my-3">
+                    <div className="flex justify-between">
                       <div className="text-bold">Videos</div>
 
                       <div className="text-bold underline">
@@ -221,14 +221,17 @@ const Details = () => {
                       </div>
                     </div>
                     <div className="divider my-1"></div>
-                    <div className="carousel carousel-center max-w-full space-x-3">
+                    <div className="carousel carousel-center space-x-3 overflow-hidden overflow-x-clip">
                       {loading ? (
                         <div className="carousel-item h-56 w-96 skeleton"></div>
                       ) : (
                         detail?.videos?.results
                           .slice(0, 3)
                           .map((video, index) => (
-                            <div className="carousel-item" key={index}>
+                            <div
+                              className="carousel-item flex-shrink-0 w-full md:w-1/3"
+                              key={index}
+                            >
                               <YoutubeEmbed videoId={video.key} />
                             </div>
                           ))
@@ -238,7 +241,7 @@ const Details = () => {
                 </div>
               </div>
 
-              <div className="right-pane">
+              <div className=" flex-1 right-pane basis-2/6">
                 {mediaType != "person" ? (
                   <>
                     {user ? (
@@ -343,7 +346,7 @@ const Details = () => {
                   </figure>
                 )}
 
-                <div className="stats w-full stats-vertical shadow min-w-48">
+                <div className="stats w-full stats-vertical max-w-96 text-wrap">
                   {mediaType === "person" ? (
                     <div className="stat  px-0">
                       {loading ? (
@@ -354,7 +357,7 @@ const Details = () => {
                       ) : (
                         <>
                           <div className="stat-title">Gender</div>
-                          <div className="stat-value">
+                          <div className="stat-value break-words whitespace-normal">
                             {genderMap[detail.gender] || "Unknown"}
                           </div>
                         </>
@@ -371,17 +374,26 @@ const Details = () => {
                           </div>
                         ) : (
                           <>
-                            <div className="stat-title">Release date</div>
+                            <div className="stat-title">
+                              {mediaType === "tv"
+                                ? "First air date"
+                                : "Release date"}
+                            </div>
                             <div className="text-lg font-semibold">
                               {detail ? (
-                                <FormatDate dateString={detail?.release_date} />
+                                <FormatDate
+                                  dateString={
+                                    detail?.release_date ||
+                                    detail?.first_air_date
+                                  }
+                                />
                               ) : null}
                             </div>
                           </>
                         )}
                       </div>
                       {/* Genres */}
-                      <div className="stat px-0">
+                      <div className="stat px-0 text-wrap">
                         {loading ? (
                           <div className="flex w-full flex-col gap-2">
                             <div className="skeleton h-4 w-20"></div>
@@ -392,7 +404,7 @@ const Details = () => {
                             <div className="stat-title">Genres</div>
                             <div className="stat-value">
                               {detail.genres ? (
-                                <h3 className="text-lg font-semibold">
+                                <h3 className="text-lg font-semibold break-words whitespace-normal">
                                   {detail.genres.map((genre, index) => (
                                     <span key={genre.id}>
                                       {genre.name}
