@@ -11,6 +11,7 @@ VITE_TMDB_API_TOKEN = <your token here>
 VITE_TMDB_BASE_URL = "https://api.themoviedb.org/3"
 VITE_TMDB_BASE_IMG_URL =   "https://image.tmdb.org/t/p"
 ```
+## Screenshots
 ![Screenshot (551)](https://github.com/user-attachments/assets/6b5ed7d6-93bb-41a4-babc-61c9b8af102a)
 ![Screenshot (550)](https://github.com/user-attachments/assets/eed5938f-f805-4093-8c15-eac832ae4088)
 ![Screenshot (552)](https://github.com/user-attachments/assets/e8ce63e1-574b-4471-a161-834070ae66b9)
